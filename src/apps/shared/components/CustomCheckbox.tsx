@@ -1,4 +1,5 @@
 import React from 'react';
+import './custom-checkbox.css';
 
 interface CustomCheckboxProps {
   checked: boolean;
@@ -15,16 +16,16 @@ export const CustomCheckbox: React.FC<CustomCheckboxProps> = ({
 }) => {
   return (
     <div className="checkbox-group">
-      <label className="custom-checkbox">
+      <label className="checkbox-label">
         <input
           type="checkbox"
           checked={checked}
           onChange={(e) => onChange(e.target.checked)}
           disabled={disabled}
         />
-        <span className="checkbox-mark"></span>
+        <span className="checkbox-custom"></span>
+        <span className="checkbox-text">{label}</span>
       </label>
-      <span>{label}</span>
     </div>
   );
 }; 
