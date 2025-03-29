@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <h1>Free Online Finance Calculator</h1>
+        <h1>Online Finance Calculator</h1>
         <p>Simple and powerful financial tools to help you plan your future</p>
       </header>
 
