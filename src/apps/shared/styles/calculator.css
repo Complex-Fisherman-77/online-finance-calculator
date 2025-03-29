@@ -1,0 +1,263 @@
+.calculator-container {
+  max-width: 100%;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.calculator-title {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.calculator-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.section-title {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.inputs-section {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.amount-section {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  background: #ffffff;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  margin-bottom: 1rem;
+  justify-content: center;
+}
+
+.amount-section .input-group {
+  flex: 1;
+  max-width: 200px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-group label {
+  font-weight: 500;
+  color: #2c3e50;
+  font-size: 0.95rem;
+}
+
+.input-group input[type="text"],
+.input-group input[type="number"] {
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s;
+  background-color: #ffffff;
+  color: #2c3e50;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input-group input[type="text"]:focus,
+.input-group input[type="number"]:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.input-group input[type="text"]:disabled,
+.input-group input[type="number"]:disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+  color: #6c757d;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  transition: all 0.2s;
+  margin: 0;
+  height: fit-content;
+  position: relative;
+  cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkbox-group label {
+  font-weight: 500;
+  color: #2c3e50;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  padding-left: 28px;
+  position: relative;
+}
+
+.checkbox-group label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ced4da;
+  border-radius: 4px;
+  background-color: #ffffff;
+  transition: all 0.2s;
+}
+
+.checkbox-group label:after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  width: 5px;
+  height: 10px;
+  border: solid #4a90e2;
+  border-width: 0 2px 2px 0;
+  opacity: 0;
+  transition: all 0.2s;
+}
+
+.checkbox-group:hover label:before {
+  border-color: #4a90e2;
+  background-color: #f8f9fa;
+}
+
+.checkbox-group input[type="checkbox"]:checked + label:before {
+  background-color: #4a90e2;
+  border-color: #4a90e2;
+}
+
+.checkbox-group input[type="checkbox"]:checked + label:after {
+  opacity: 1;
+  border-color: #ffffff;
+}
+
+.checkbox-group input[type="checkbox"]:focus + label:before {
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.results-section {
+  overflow-x: auto;
+  margin-top: 2rem;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  font-size: 0.9rem;
+}
+
+.results-table th,
+.results-table td {
+  padding: 0.75rem;
+  text-align: right;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.results-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+  white-space: normal;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  line-height: 1.2;
+  vertical-align: bottom;
+}
+
+.results-table th span {
+  display: block;
+  font-size: 0.8rem;
+  color: #6c757d;
+  font-weight: normal;
+}
+
+.results-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.results-table td {
+  color: #212529;
+}
+
+/* @media (max-width: 1200px) {
+  .inputs-section {
+    grid-template-columns: repeat(2, 1fr);
+  }
+} */
+
+@media (max-width: 768px) {
+  .calculator-container {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .inputs-section {
+    grid-template-columns: 1fr;
+  }
+
+  .amount-section {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .amount-section .input-group {
+    max-width: 100%;
+  }
+
+  .amount-section .checkbox-group {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .results-table th,
+  .results-table td {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+} 

@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { CustomCheckbox, InputField, ResultTable } from "../shared/components";
+import "../shared/styles/calculator.css";
 import "./fixed-time-withdrawal-retirement-simulator.css";
 
 function FixedTimeWithdrawalRetirementSimulator() {
@@ -83,141 +85,115 @@ function FixedTimeWithdrawalRetirementSimulator() {
         setAmount(parseFloat(amount));
     };
 
+    const tableHeaders = [
+        'Period',
+        'Previous Balance',
+        'Previous Balance Net',
+        'Previous Balance Net Deflated',
+        'Balance',
+        'Balance Net',
+        'Inflation Index',
+        'Balance Net Deflated',
+        'Net Withdrawal Deflated',
+        'Net Withdrawal',
+        'Gross Withdrawal',
+        'Gross Withdrawal / Balance'
+    ];
+
+    const tableData = periodsData.map(data => [
+        data.period,
+        new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.previousBalance),
+        new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.previousBalanceNet),
+        new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.previousBalanceNetDeflated),
+        new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.balance),
+        new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.balanceNet),
+        data.inflationIndex.toFixed(4),
+        new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.balanceNetDeflated),
+        new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.netWithdrawalDeflated),
+        new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.netWithdrawal),
+        new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.grossWithdrawal),
+        new Intl.NumberFormat('en-US', { style: 'percent', minimumFractionDigits: 2 }).format(data.grossWithdrawalOverBalance)
+    ]);
+
     return (
         <div className="calculator-container">
-            <h1 className="calculator-title">Perpetual Withdrawal Retirement Simulator</h1>
+            <h1 className="calculator-title">Fixed Time Withdrawal Retirement Simulator</h1>
 
-            <div className="inputs-section">
+            <div className="calculator-section">
+                <h2 className="section-title">Amount Settings</h2>
                 <div className="amount-section">
-                    <div className="input-group">
-                        <label htmlFor="gross-amount">Gross Amount</label>
-                        <input
-                            type="number"
-                            id="gross-amount"
-                            value={grossAmount || ''}
-                            onChange={e => handleSetAmount(e.target.value, setGrossAmount)}
-                            disabled={useNetAmount}
-                            placeholder="Enter gross amount"
-                        />
-                    </div>
-                    <div className="checkbox-group">
-                        <input
-                            type="checkbox"
-                            id="use-net-amount"
-                            checked={useNetAmount}
-                            onChange={e => setUseNetAmount(!!e.target.checked)}
-                        />
-                        <label htmlFor="use-net-amount">Use Net Amount</label>
-                    </div>
-                    <div className="input-group">
-                        <label htmlFor="net-amount">Net Amount</label>
-                        <input
-                            type="number"
-                            id="net-amount"
-                            value={netAmount || ''}
-                            onChange={e => handleSetAmount(e.target.value, setNetAmount)}
-                            disabled={!useNetAmount}
-                            placeholder="Enter net amount"
-                        />
-                    </div>
-                </div>
-
-                <div className="input-group">
-                    <label htmlFor="period-days">Period in Days</label>
-                    <select
-                        id="period-days"
-                        value={periodDays}
-                        onChange={e => handleSetAmount(e.target.value, setPeriodDays)}
-                        disabled
-                    >
-                        <option value="21">21 (1 month)</option>
-                        <option value="126">126 (6 months)</option>
-                        <option value="252">252 (1 year)</option>
-                    </select>
-                </div>
-
-                <div className="input-group">
-                    <label htmlFor="periods">Number of Periods</label>
-                    <input
+                    <InputField
+                        label="Gross Amount"
+                        value={grossAmount || ''}
+                        onChange={(value) => handleSetAmount(value, setGrossAmount)}
                         type="number"
-                        id="periods"
+                        disabled={useNetAmount}
+                        placeholder="Enter gross amount"
+                    />
+                    <CustomCheckbox
+                        checked={useNetAmount}
+                        onChange={setUseNetAmount}
+                        label="Use Net Amount"
+                    />
+                    <InputField
+                        label="Net Amount"
+                        value={netAmount || ''}
+                        onChange={(value) => handleSetAmount(value, setNetAmount)}
+                        type="number"
+                        disabled={!useNetAmount}
+                        placeholder="Enter net amount"
+                    />
+                </div>
+            </div>
+
+            <div className="calculator-section">
+                <h2 className="section-title">Settings</h2>
+                <div className="inputs-section">
+                    <InputField
+                        label="Period in Days"
+                        value={periodDays}
+                        onChange={(value) => handleSetAmount(value, setPeriodDays)}
+                        type="number"
+                        disabled
+                        placeholder="Enter period in days"
+                    />
+                    <InputField
+                        label="Number of Periods"
                         value={periods}
-                        onChange={e => handleSetAmount(e.target.value, setPeriods)}
+                        onChange={(value) => handleSetAmount(value, setPeriods)}
+                        type="number"
                         placeholder="Enter number of periods"
                     />
-                </div>
-
-                <div className="input-group">
-                    <label htmlFor="tax-on-profits">Tax on Profits (%)</label>
-                    <input
-                        type="number"
-                        id="tax-on-profits"
+                    <InputField
+                        label="Tax on Profits (%)"
                         value={taxOnProfits || ''}
-                        onChange={e => handleSetAmount(e.target.value, setTaxOnProfits)}
+                        onChange={(value) => handleSetAmount(value, setTaxOnProfits)}
+                        type="number"
                         placeholder="Enter tax percentage"
                     />
-                </div>
-
-                <div className="input-group">
-                    <label htmlFor="expected-profitability">Expected Profitability (%)</label>
-                    <input
-                        type="number"
-                        id="expected-profitability"
+                    <InputField
+                        label="Expected Profitability (%)"
                         value={expectedProfitability || ''}
-                        onChange={e => handleSetAmount(e.target.value, setExpectedProfitability)}
+                        onChange={(value) => handleSetAmount(value, setExpectedProfitability)}
+                        type="number"
                         placeholder="Enter expected profitability"
                     />
-                </div>
-
-                <div className="input-group">
-                    <label htmlFor="expected-inflation">Expected Inflation (%)</label>
-                    <input
-                        type="number"
-                        id="expected-inflation"
+                    <InputField
+                        label="Expected Inflation (%)"
                         value={expectedInflation || ''}
-                        onChange={e => handleSetAmount(e.target.value, setExpectedInflation)}
+                        onChange={(value) => handleSetAmount(value, setExpectedInflation)}
+                        type="number"
                         placeholder="Enter expected inflation"
                     />
                 </div>
             </div>
 
-            <div className="results-section">
-                <table className="results-table">
-                    <thead>
-                        <tr>
-                            <th>Period</th>
-                            <th>Previous Balance</th>
-                            <th>Previous Balance Net</th>
-                            <th>Previous Balance Net Deflated</th>
-                            <th>Balance</th>
-                            <th>Balance Net</th>
-                            <th>Inflation Index</th>
-                            <th>Balance Net Deflated</th>
-                            <th>Net Withdrawal Deflated</th>
-                            <th>Net Withdrawal</th>
-                            <th>Gross Withdrawal</th>
-                            <th>Gross Withdrawal / Balance</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {periodsData.map((data, index) => (
-                            <tr key={index}>
-                                <td>{data.period}</td>
-                                <td>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.previousBalance)}</td>
-                                <td>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.previousBalanceNet)}</td>
-                                <td>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.previousBalanceNetDeflated)}</td>
-                                <td>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.balance)}</td>
-                                <td>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.balanceNet)}</td>
-                                <td>{data.inflationIndex.toFixed(4)}</td>
-                                <td>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.balanceNetDeflated)}</td>
-                                <td>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.netWithdrawalDeflated)}</td>
-                                <td>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.netWithdrawal)}</td>
-                                <td>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.grossWithdrawal)}</td>
-                                <td>{new Intl.NumberFormat('en-US', { style: 'percent', minimumFractionDigits: 2 }).format(data.grossWithdrawalOverBalance)}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            <div className="calculator-section">
+                <h2 className="section-title">Results</h2>
+                <ResultTable
+                    headers={tableHeaders}
+                    data={tableData}
+                />
             </div>
         </div>
     );
