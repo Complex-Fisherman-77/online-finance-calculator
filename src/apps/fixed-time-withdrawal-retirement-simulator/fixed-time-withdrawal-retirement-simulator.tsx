@@ -16,13 +16,6 @@ function FixedTimeWithdrawalRetirementSimulator() {
 
     const [periodsData, setPeriodsData] = useState<any[]>([]);
 
-    // Add new state for input values
-    const [grossAmountInput, setGrossAmountInput] = useState('');
-    const [netAmountInput, setNetAmountInput] = useState('');
-    const [taxInput, setTaxInput] = useState('15');
-    const [profitabilityInput, setProfitabilityInput] = useState('10');
-    const [inflationInput, setInflationInput] = useState('5');
-
     useEffect(() => {
         if (useNetAmount && netAmount > 0 && taxOnProfits > 0) {
             let newGrossAmount = netAmount / (1 - taxOnProfits / 100);
