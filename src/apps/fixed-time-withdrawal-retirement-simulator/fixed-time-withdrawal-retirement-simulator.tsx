@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import "./perpetual-withdrawal-retirement-simulator.css";
+import "./fixed-time-withdrawal-retirement-simulator.css";
 
-function PerpetualWithdrawalRetirementSimulator() {
+function FixedTimeWithdrawalRetirementSimulator() {
     const [grossAmount, setGrossAmount] = useState(0);
     const [netAmount, setNetAmount] = useState(0);
     const [useNetAmount, setUseNetAmount] = useState(false);
@@ -223,4 +223,4 @@ function PerpetualWithdrawalRetirementSimulator() {
     );
 }
 
-export default PerpetualWithdrawalRetirementSimulator;
+export default FixedTimeWithdrawalRetirementSimulator;
