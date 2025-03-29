@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/result-table.css';
 
 interface ResultTableProps {
   headers: string[];
