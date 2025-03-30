@@ -200,12 +200,13 @@ function FixedTimeWithdrawalRetirementSimulator() {
             y: {
                 beginAtZero: true,
                 ticks: {
-                    callback: (value: number) => 
-                        new Intl.NumberFormat('en-US', { 
+                    callback: function(tickValue: number | string) {
+                        return new Intl.NumberFormat('en-US', { 
                             style: 'currency', 
                             currency: 'USD',
                             maximumFractionDigits: 0
-                        }).format(value)
+                        }).format(Number(tickValue));
+                    }
                 }
             }
         }
