@@ -71,6 +71,20 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+.charts-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.chart-container {
+  background: #ffffff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
 @media (max-width: 768px) {
   .calculator-container {
     margin: 1rem;
@@ -99,5 +113,9 @@
   .result-table td {
     padding: 0.5rem;
     font-size: 0.8rem;
+  }
+
+  .charts-section {
+    grid-template-columns: 1fr;
   }
 } 

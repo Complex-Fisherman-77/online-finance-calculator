@@ -2,6 +2,28 @@ import { useEffect, useState } from "react";
 import { CustomCheckbox, InputField, ResultTable } from "../shared/components";
 import "../shared/styles/calculator.css";
 import "./fixed-time-withdrawal-retirement-simulator.css";
+import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+} from 'chart.js';
+
+// Register ChartJS components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function FixedTimeWithdrawalRetirementSimulator() {
     const [grossAmount, setGrossAmount] = useState(1000);
@@ -125,6 +147,70 @@ function FixedTimeWithdrawalRetirementSimulator() {
         new Intl.NumberFormat('en-US', { style: 'percent', minimumFractionDigits: 2 }).format(data.grossWithdrawalOverBalance)
     ]);
 
+    // Chart configurations
+    const balanceChartData = {
+        labels: periodsData.slice(1).map(data => `Period ${data.period}`),
+        datasets: [
+            {
+                label: 'Balance',
+                data: periodsData.slice(1).map(data => data.balance),
+                borderColor: '#4a90e2',
+                backgroundColor: 'rgba(74, 144, 226, 0.1)',
+                fill: true,
+            },
+            {
+                label: 'Gross Withdrawal',
+                data: periodsData.slice(1).map(data => data.grossWithdrawal),
+                borderColor: '#e74c3c',
+                backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                fill: true,
+            }
+        ]
+    };
+
+    const netDeflatedChartData = {
+        labels: periodsData.slice(1).map(data => `Period ${data.period}`),
+        datasets: [
+            {
+                label: 'Previous Balance Net Deflated',
+                data: periodsData.slice(1).map(data => data.previousBalanceNetDeflated),
+                borderColor: '#2ecc71',
+                backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                fill: true,
+            },
+            {
+                label: 'Net Withdrawal Deflated',
+                data: periodsData.slice(1).map(data => data.netWithdrawalDeflated),
+                borderColor: '#f1c40f',
+                backgroundColor: 'rgba(241, 196, 15, 0.1)',
+                fill: true,
+            }
+        ]
+    };
+
+    const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'top' as const,
+            },
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: (value: number) => 
+                        new Intl.NumberFormat('en-US', { 
+                            style: 'currency', 
+                            currency: 'USD',
+                            maximumFractionDigits: 0
+                        }).format(value)
+                }
+            }
+        }
+    };
+
     return (
         <div className="calculator-container">
             <h1 className="calculator-title">Fixed Time Withdrawal Retirement Simulator</h1>
@@ -204,6 +290,20 @@ function FixedTimeWithdrawalRetirementSimulator() {
                     headers={tableHeaders}
                     data={tableData}
                 />
+                <div className="charts-section">
+                    <div className="chart-container">
+                        <h3>Balance and Gross Withdrawal</h3>
+                        <div style={{ height: '400px' }}>
+                            <Line data={balanceChartData} options={chartOptions} />
+                        </div>
+                    </div>
+                    <div className="chart-container">
+                        <h3>Net Deflated Values</h3>
+                        <div style={{ height: '400px' }}>
+                            <Line data={netDeflatedChartData} options={chartOptions} />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );
