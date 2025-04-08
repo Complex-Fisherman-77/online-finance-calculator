@@ -1,0 +1,58 @@
+{
+  "app": {
+    "title": "Calculadora Financeira Online",
+    "subtitle": "Ferramentas financeiras simples e poderosas para ajudar você a planejar seu futuro"
+  },
+  "calculators": {
+    "perpetualWithdrawal": {
+      "title": "Calculadora de Retirada Perpétua",
+      "description": "Calcule quanto você pode retirar do seu portfólio de aposentadoria mantendo seu valor ao longo do tempo, considerando impostos e inflação."
+    },
+    "fixedTimeWithdrawal": {
+      "title": "Calculadora de Retirada em Tempo Fixo",
+      "description": "Planeje suas retiradas de aposentadoria para um período específico, levando em conta impostos, inflação e retornos esperados."
+    }
+  },
+  "common": {
+    "amountSettings": "Configurações de Valor",
+    "settings": "Configurações",
+    "results": "Resultados",
+    "grossAmount": "Valor Bruto",
+    "netAmount": "Valor Líquido",
+    "useNetAmount": "Usar Valor Líquido",
+    "useDesiredNetWithdrawalDeflated": "Usar Valor Líquido de Retirada Desinflacionado Desejado",
+    "desiredNetWithdrawalDeflated": "Valor Líquido de Retirada Desinflacionado Desejado",
+    "periodInDays": "Período em Dias",
+    "numberOfPeriods": "Número de Períodos",
+    "taxOnProfits": "Imposto sobre Lucros (%)",
+    "expectedProfitability": "Rentabilidade Esperada (%)",
+    "expectedInflation": "Inflação Esperada (%)",
+    "enterGrossAmount": "Digite o valor bruto",
+    "enterNetAmount": "Digite o valor líquido",
+    "enterDesiredNetWithdrawalDeflated": "Digite o valor líquido de retirada desinflacionado desejado",
+    "enterPeriodInDays": "Digite o período em dias",
+    "enterNumberOfPeriods": "Digite o número de períodos",
+    "enterTaxPercentage": "Digite a porcentagem de imposto",
+    "enterExpectedProfitability": "Digite a rentabilidade esperada",
+    "enterExpectedInflation": "Digite a inflação esperada"
+  },
+  "table": {
+    "period": "Período",
+    "previousBalance": "Saldo Anterior",
+    "previousBalanceNet": "Saldo Anterior Líquido",
+    "previousBalanceNetDeflated": "Saldo Anterior Líquido Desinflacionado",
+    "withdrawalFactor": "Fator de Retirada",
+    "balance": "Saldo",
+    "balanceNet": "Saldo Líquido",
+    "inflationIndex": "Índice de Inflação",
+    "balanceNetDeflated": "Saldo Líquido Desinflacionado",
+    "netWithdrawalDeflated": "Retirada Líquida Desinflacionada",
+    "netWithdrawal": "Retirada Líquida",
+    "grossWithdrawal": "Retirada Bruta",
+    "grossWithdrawalOverBalance": "Retirada Bruta / Saldo"
+  },
+  "charts": {
+    "balanceAndGrossWithdrawal": "Saldo e Retirada Bruta",
+    "netDeflatedValues": "Valores Líquidos Desinflacionados"
+  }
+} 

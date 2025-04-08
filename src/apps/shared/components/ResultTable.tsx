@@ -1,17 +1,30 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import '../styles/result-table.css';
 
 interface ResultTableProps {
   headers: string[];
   data: (string | number)[][];
+  translateHeaders?: boolean;
 }
 
-export const ResultTable: React.FC<ResultTableProps> = ({ headers, data }) => {
+export const ResultTable: React.FC<ResultTableProps> = ({ 
+  headers, 
+  data,
+  translateHeaders = false
+}) => {
+  const { t } = useTranslation();
+  
+  // Translate headers if needed
+  const translatedHeaders = translateHeaders 
+    ? headers.map(header => t(header))
+    : headers;
+  
   return (
     <table className="result-table">
       <thead>
         <tr>
-          {headers.map((header, index) => (
+          {translatedHeaders.map((header, index) => (
             <th key={index}>{header}</th>
           ))}
         </tr>

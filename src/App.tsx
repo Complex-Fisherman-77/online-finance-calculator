@@ -1,23 +1,23 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { Navbar } from './apps/shared/components/navbar/navbar'
 import './App.css'
 
 function App() {
+  const { t } = useTranslation();
+  
   return (
     <div className="app-container">
-      <header className="app-header">
-        <h1>Online Finance Calculator</h1>
-        <p>Simple and powerful financial tools to help you plan your future</p>
-      </header>
-
+      <Navbar />
       <div className="apps-grid">
         <Link to="/perpetual-withdrawal" className="app-card">
-          <h2>Perpetual Withdrawal Calculator</h2>
-          <p>Calculate how much you can withdraw from your retirement portfolio while maintaining its value over time, considering taxes and inflation.</p>
+          <h2>{t('calculators.perpetual.title')}</h2>
+          <p>{t('calculators.perpetual.description')}</p>
         </Link>
 
         <Link to="/fixed-time-withdrawal" className="app-card">
-          <h2>Fixed Time Withdrawal Calculator</h2>
-          <p>Plan your retirement withdrawals for a specific time period, taking into account taxes, inflation, and expected returns.</p>
+          <h2>{t('calculators.fixedTime.title')}</h2>
+          <p>{t('calculators.fixedTime.description')}</p>
         </Link>
 
         {/* Add more calculator cards here as you create them */}

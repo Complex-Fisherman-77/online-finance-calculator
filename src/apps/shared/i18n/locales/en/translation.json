@@ -1,0 +1,59 @@
+{
+  "app": {
+    "title": "Online Finance Calculator",
+    "subtitle": "Simple and powerful financial tools to help you plan your future"
+  },
+  "calculators": {
+    "perpetual": {
+      "title": "Perpetual Withdrawal Retirement Simulator",
+      "description": "Calculate how much you can withdraw from your retirement portfolio while maintaining its value over time, considering taxes and inflation."
+    },
+    "fixedTime": {
+      "title": "Fixed Time Withdrawal Retirement Simulator",
+      "description": "Plan your retirement withdrawals for a specific time period, taking into account taxes, inflation, and expected returns."
+    }
+  },
+  "common": {
+    "amountSettings": "Amount Settings",
+    "settings": "Settings",
+    "results": "Results",
+    "grossAmount": "Gross Amount",
+    "netAmount": "Net Amount",
+    "useNetAmount": "Use Net Amount",
+    "useDesiredNetWithdrawalDeflated": "Use Desired Net Withdrawal Deflated",
+    "desiredNetWithdrawalDeflated": "Desired Net Withdrawal Deflated",
+    "periodInDays": "Period in Days",
+    "numberOfPeriods": "Number of Periods",
+    "taxOnProfits": "Tax on Profits",
+    "expectedProfitability": "Expected Profitability",
+    "expectedInflation": "Expected Inflation",
+    "enterGrossAmount": "Enter gross amount",
+    "enterNetAmount": "Enter net amount",
+    "enterDesiredNetWithdrawalDeflated": "Enter desired net withdrawal deflated",
+    "enterPeriodInDays": "Enter period in days",
+    "enterNumberOfPeriods": "Enter number of periods",
+    "enterTaxPercentage": "Enter tax percentage",
+    "enterExpectedProfitability": "Enter expected profitability",
+    "enterExpectedInflation": "Enter expected inflation",
+    "feedback": "Send Feedback"
+  },
+  "table": {
+    "period": "Period",
+    "previousBalance": "Previous Balance",
+    "previousBalanceNet": "Previous Balance Net",
+    "previousBalanceNetDeflated": "Previous Balance Net Deflated",
+    "withdrawalFactor": "Withdrawal Factor",
+    "balance": "Balance",
+    "balanceNet": "Balance Net",
+    "inflationIndex": "Inflation Index",
+    "balanceNetDeflated": "Balance Net Deflated",
+    "netWithdrawalDeflated": "Net Withdrawal Deflated",
+    "netWithdrawal": "Net Withdrawal",
+    "grossWithdrawal": "Gross Withdrawal",
+    "grossWithdrawalOverBalance": "Gross Withdrawal Over Balance"
+  },
+  "charts": {
+    "balanceAndGrossWithdrawal": "Balance and Gross Withdrawal",
+    "netDeflatedValues": "Net Deflated Values"
+  }
+} 

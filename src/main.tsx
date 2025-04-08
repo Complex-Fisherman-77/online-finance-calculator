@@ -7,6 +7,9 @@ import PerpetualWithdrawalRetirementSimulator from './apps/perpetual-withdrawal-
 import FixedTimeWithdrawalRetirementSimulator from './apps/fixed-time-withdrawal-retirement-simulator/fixed-time-withdrawal-retirement-simulator.tsx'
 import GoogleFormsFeedback from './components/google-forms-feedback/google-forms-feedback.tsx'
 
+// Import i18n configuration
+import './apps/shared/i18n'
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter basename="/online-finance-calculator">

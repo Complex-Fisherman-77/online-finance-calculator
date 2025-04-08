@@ -1,0 +1,27 @@
+.container {
+  background: #f8f9fa;
+  box-sizing: border-box;
+  margin-top: 2rem;
+}
+
+.title {
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  padding-top: 1rem;
+}
+
+.inputsSection {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .inputsSection {
+    grid-template-columns: 1fr;
+  }
+} 

@@ -4,31 +4,32 @@ import { CustomCheckbox, InputField, ResultTable, Navbar } from "../shared/compo
 import { formatCurrency, formatPercentage } from "../shared/utils/input-masks";
 import { useUrlParams } from "../shared/hooks/use-url-params";
 import { PeriodData } from "../shared/types/calculator.types";
+import "../shared/styles/calculator.css";
+import "./fixed-time-withdrawal-retirement-simulator.css";
 import { Line } from 'react-chartjs-2';
-import styles from './perpetual-withdrawal-retirement-simulator.module.css';
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
 } from 'chart.js';
 
 // Register ChartJS components
 ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
 );
 
-function PerpetualWithdrawalRetirementSimulator() {
+function FixedTimeWithdrawalRetirementSimulator() {
     const { t, i18n } = useTranslation();
     const currentLocale = i18n.language;
     const { getParam, updateParams } = useUrlParams();
@@ -64,14 +65,14 @@ function PerpetualWithdrawalRetirementSimulator() {
     useEffect(() => {
         if (useDesiredNetWithdrawalDeflated && desiredNetWithdrawalDeflated > 0 && 
             taxOnProfits > 0 && expectedProfitability > 0 && expectedInflation > 0 && 
-            efectiveRate > 0) {
+            efectiveRate > 0 && periods > 0) {
             
-            // Calculate the required initial balance to achieve the desired net withdrawal deflated
-            // For perpetual withdrawal, we need to find the initial balance that will give us
-            // the desired net withdrawal deflated in the first period
+            // Calculate the withdrawal factor for fixed time periods
+            // This is the formula for the payment factor in an amortization schedule
+            const withdrawalFactor = (efectiveRate * (1 + efectiveRate) ** periods) / ((1 + efectiveRate) ** periods - 1);
             
             // Calculate the required net deflated balance
-            const requiredNetDeflatedBalance = desiredNetWithdrawalDeflated / efectiveRate;
+            const requiredNetDeflatedBalance = desiredNetWithdrawalDeflated / withdrawalFactor;
             
             // Calculate the required net balance (not deflated)
             const requiredNetBalance = requiredNetDeflatedBalance;
@@ -89,11 +90,17 @@ function PerpetualWithdrawalRetirementSimulator() {
             // Disable the useNetAmount option since we're calculating both values
             setUseNetAmount(false);
         }
-    }, [useDesiredNetWithdrawalDeflated, desiredNetWithdrawalDeflated, taxOnProfits, expectedProfitability, expectedInflation, efectiveRate]);
+    }, [useDesiredNetWithdrawalDeflated, desiredNetWithdrawalDeflated, taxOnProfits, expectedProfitability, expectedInflation, efectiveRate, periods]);
 
     useEffect(() => {
         if (grossAmount > 0 && taxOnProfits > 0 && periodDays > 0 && periods > 0 && expectedProfitability > 0 && expectedInflation > 0 && efectiveRate > 0) {
             const dataArray: PeriodData[] = [];
+
+            // Calculate the withdrawal factor for fixed time periods
+            const withdrawalFactor = (efectiveRate * (1 + efectiveRate) ** periods) / ((1 + efectiveRate) ** periods - 1);
+            
+            // Calculate the initial net withdrawal deflated
+            const initialNetWithdrawalDeflated = (grossAmount * (1 - taxOnProfits / 100)) * withdrawalFactor;
 
             dataArray.push({
                 period: 0,
@@ -111,26 +118,34 @@ function PerpetualWithdrawalRetirementSimulator() {
             });
             
             for (let i = 1; i <= periods; i++) {
+                const previousBalance = dataArray[i - 1].balance - dataArray[i - 1].grossWithdrawal;
+                const previousBalanceNet = previousBalance * (1 - taxOnProfits / 100);
+                const previousBalanceNetDeflated = previousBalanceNet / dataArray[i - 1].inflationIndex;
+                const balance = previousBalance * (1 + expectedProfitability / 100);
+                const balanceNet = balance * (1 - taxOnProfits / 100);
+                const inflationIndex = dataArray[i - 1].inflationIndex * (1 + expectedInflation / 100);
+                const balanceNetDeflated = balanceNet / inflationIndex;
+                
+                // For fixed time, we use the same withdrawal factor for all periods
+                const netWithdrawalDeflated = initialNetWithdrawalDeflated;
+                const netWithdrawal = netWithdrawalDeflated * inflationIndex;
+                const grossWithdrawal = netWithdrawal / (1 - taxOnProfits / 100);
+                const grossWithdrawalOverBalance = grossWithdrawal / balance;
+
                 const data: PeriodData = {
                     period: i,
-                    previousBalance: dataArray[i - 1].balance - dataArray[i - 1].grossWithdrawal,
-                    previousBalanceNet: (dataArray[i - 1].balance - dataArray[i - 1].grossWithdrawal) * (1 - taxOnProfits / 100),
-                    previousBalanceNetDeflated: ((dataArray[i - 1].balance - dataArray[i - 1].grossWithdrawal) * (1 - taxOnProfits / 100)) / dataArray[i - 1].inflationIndex,
-                    balance: (dataArray[i - 1].balance - dataArray[i - 1].grossWithdrawal) * (1 + expectedProfitability / 100),
-                    balanceNet: ((dataArray[i - 1].balance - dataArray[i - 1].grossWithdrawal) * (1 + expectedProfitability / 100)) * (1 - taxOnProfits / 100),
-                    inflationIndex: dataArray[i - 1].inflationIndex * (1 + expectedInflation / 100),
-                    balanceNetDeflated: (((dataArray[i - 1].balance - dataArray[i - 1].grossWithdrawal) * (1 + expectedProfitability / 100)) * (1 - taxOnProfits / 100)) / (dataArray[i - 1].inflationIndex * (1 + expectedInflation / 100)),
-                    netWithdrawalDeflated: 0,
-                    netWithdrawal: 0,
-                    grossWithdrawal: 0,
-                    grossWithdrawalOverBalance: 0,
+                    previousBalance,
+                    previousBalanceNet,
+                    previousBalanceNetDeflated,
+                    balance,
+                    balanceNet,
+                    inflationIndex,
+                    balanceNetDeflated,
+                    netWithdrawalDeflated,
+                    netWithdrawal,
+                    grossWithdrawal,
+                    grossWithdrawalOverBalance,
                 };
-
-                data.balanceNetDeflated = data.balanceNet / data.inflationIndex;
-                data.netWithdrawalDeflated = data.balanceNetDeflated - data.previousBalanceNetDeflated;
-                data.netWithdrawal = data.netWithdrawalDeflated * data.inflationIndex;
-                data.grossWithdrawal = data.netWithdrawal / (1 - taxOnProfits / 100);
-                data.grossWithdrawalOverBalance = data.grossWithdrawal / data.balance;
 
                 dataArray.push(data);
             }
@@ -247,64 +262,54 @@ function PerpetualWithdrawalRetirementSimulator() {
     };
 
     return (
-        <div className={styles.container}>
-            <Navbar title={t('calculators.perpetual.title')} />
+        <div className="calculator-container">
+            <Navbar title={t('calculators.fixedTime.title')} />
             
-            <div className={styles.section}>
-                <h2 className={styles.sectionTitle}>{t('common.amountSettings')}</h2>
-                <div className={styles.amountSection}>
-                    <div className={styles.inputGroup}>
-                        <InputField
-                            label={t('common.grossAmount')}
-                            value={grossAmount || ''}
-                            onChange={(value: string) => handleSetAmount(value, setGrossAmount, 'grossAmount')}
-                            type="currency"
-                            disabled={useNetAmount || useDesiredNetWithdrawalDeflated}
-                            placeholder={t('common.enterGrossAmount')}
-                        />
-                    </div>
-                    <div className={styles.inputGroup}>
-                        <CustomCheckbox
-                            checked={useNetAmount}
-                            onChange={(checked: boolean) => handleCheckboxChange(checked, setUseNetAmount, 'useNetAmount')}
-                            label={t('common.useNetAmount')}
-                            disabled={useDesiredNetWithdrawalDeflated}
-                        />
-                    </div>
-                    <div className={styles.inputGroup}>
-                        <InputField
-                            label={t('common.netAmount')}
-                            value={netAmount || ''}
-                            onChange={(value: string) => handleSetAmount(value, setNetAmount, 'netAmount')}
-                            type="currency"
-                            disabled={!useNetAmount || useDesiredNetWithdrawalDeflated}
-                            placeholder={t('common.enterNetAmount')}
-                        />
-                    </div>
-                    <div className={styles.inputGroup}>
-                        <CustomCheckbox
-                            checked={useDesiredNetWithdrawalDeflated}
-                            onChange={(checked: boolean) => handleCheckboxChange(checked, setUseDesiredNetWithdrawalDeflated, 'useDesiredNetWithdrawalDeflated')}
-                            label={t('common.useDesiredNetWithdrawalDeflated')}
-                            disabled={useNetAmount}
-                        />
-                    </div>
-                    <div className={styles.inputGroup}>
-                        <InputField
-                            label={t('common.desiredNetWithdrawalDeflated')}
-                            value={desiredNetWithdrawalDeflated || ''}
-                            onChange={(value: string) => handleSetAmount(value, setDesiredNetWithdrawalDeflated, 'desiredNetWithdrawalDeflated')}
-                            type="currency"
-                            disabled={!useDesiredNetWithdrawalDeflated}
-                            placeholder={t('common.enterDesiredNetWithdrawalDeflated')}
-                        />
-                    </div>
+            <div className="calculator-section">
+                <h2 className="section-title">{t('common.amountSettings')}</h2>
+                <div className="amount-section">
+                    <InputField
+                        label={t('common.grossAmount')}
+                        value={grossAmount || ''}
+                        onChange={(value: string) => handleSetAmount(value, setGrossAmount, 'grossAmount')}
+                        type="currency"
+                        disabled={useNetAmount || useDesiredNetWithdrawalDeflated}
+                        placeholder={t('common.enterGrossAmount')}
+                    />
+                    <CustomCheckbox
+                        checked={useNetAmount}
+                        onChange={(checked: boolean) => handleCheckboxChange(checked, setUseNetAmount, 'useNetAmount')}
+                        label={t('common.useNetAmount')}
+                        disabled={useDesiredNetWithdrawalDeflated}
+                    />
+                    <InputField
+                        label={t('common.netAmount')}
+                        value={netAmount || ''}
+                        onChange={(value: string) => handleSetAmount(value, setNetAmount, 'netAmount')}
+                        type="currency"
+                        disabled={!useNetAmount || useDesiredNetWithdrawalDeflated}
+                        placeholder={t('common.enterNetAmount')}
+                    />
+                    <CustomCheckbox
+                        checked={useDesiredNetWithdrawalDeflated}
+                        onChange={(checked: boolean) => handleCheckboxChange(checked, setUseDesiredNetWithdrawalDeflated, 'useDesiredNetWithdrawalDeflated')}
+                        label={t('common.useDesiredNetWithdrawalDeflated')}
+                        disabled={useNetAmount}
+                    />
+                    <InputField
+                        label={t('common.desiredNetWithdrawalDeflated')}
+                        value={desiredNetWithdrawalDeflated || ''}
+                        onChange={(value: string) => handleSetAmount(value, setDesiredNetWithdrawalDeflated, 'desiredNetWithdrawalDeflated')}
+                        type="currency"
+                        disabled={!useDesiredNetWithdrawalDeflated}
+                        placeholder={t('common.enterDesiredNetWithdrawalDeflated')}
+                    />
                 </div>
             </div>
 
-            <div className={styles.section}>
-                <h2 className={styles.sectionTitle}>{t('common.settings')}</h2>
-                <div className={styles.inputsSection}>
+            <div className="calculator-section">
+                <h2 className="section-title">{t('common.settings')}</h2>
+                <div className="inputs-section">
                     <InputField
                         label={t('common.periodInDays')}
                         value={periodDays}
@@ -344,23 +349,21 @@ function PerpetualWithdrawalRetirementSimulator() {
                 </div>
             </div>
 
-            <div className={styles.section}>
-                <h2 className={styles.sectionTitle}>{t('common.results')}</h2>
-                <div className={styles.resultSection}>
-                    <ResultTable
-                        headers={tableHeaders}
-                        data={tableData}
-                        translateHeaders={false}
-                    />
-                </div>
-                <div className={styles.chartsSection}>
-                    <div className={styles.chartContainer}>
+            <div className="calculator-section">
+                <h2 className="section-title">{t('common.results')}</h2>
+                <ResultTable
+                    headers={tableHeaders}
+                    data={tableData}
+                    translateHeaders={false}
+                />
+                <div className="charts-section">
+                    <div className="chart-container">
                         <h3>{t('charts.balanceAndGrossWithdrawal')}</h3>
                         <div style={{ height: '400px' }}>
                             <Line data={balanceChartData} options={chartOptions} />
                         </div>
                     </div>
-                    <div className={styles.chartContainer}>
+                    <div className="chart-container">
                         <h3>{t('charts.netDeflatedValues')}</h3>
                         <div style={{ height: '400px' }}>
                             <Line data={netDeflatedChartData} options={chartOptions} />
@@ -372,4 +375,4 @@ function PerpetualWithdrawalRetirementSimulator() {
     );
 }
 
-export default PerpetualWithdrawalRetirementSimulator;
+export default FixedTimeWithdrawalRetirementSimulator;
