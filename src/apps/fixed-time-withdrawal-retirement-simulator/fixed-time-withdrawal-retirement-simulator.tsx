@@ -29,6 +29,8 @@ function FixedTimeWithdrawalRetirementSimulator() {
     const [grossAmount, setGrossAmount] = useState(1000);
     const [netAmount, setNetAmount] = useState(0);
     const [useNetAmount, setUseNetAmount] = useState(false);
+    const [desiredNetWithdrawalDeflated, setDesiredNetWithdrawalDeflated] = useState(0);
+    const [useDesiredNetWithdrawalDeflated, setUseDesiredNetWithdrawalDeflated] = useState(false);
 
     const [taxOnProfits, setTaxOnProfits] = useState(15);
     const [periodDays, setPeriodDays] = useState(252);
@@ -51,6 +53,39 @@ function FixedTimeWithdrawalRetirementSimulator() {
             setEfectiveRate((1 + expectedProfitability / 100) / (1 + expectedInflation / 100) - 1);
         }
     }, [expectedProfitability, expectedInflation]);
+
+    useEffect(() => {
+        if (useDesiredNetWithdrawalDeflated && desiredNetWithdrawalDeflated > 0 && 
+            taxOnProfits > 0 && expectedProfitability > 0 && expectedInflation > 0 && 
+            efectiveRate > 0 && periods > 0) {
+            
+            // Calculate the required initial balance to achieve the desired net withdrawal deflated
+            // For fixed-time withdrawal, we need to find the initial balance that will give us
+            // the desired net withdrawal deflated in the first period
+            
+            // Calculate the withdrawal factor for the first period
+            const withdrawalFactor = efectiveRate / (1 - (1 + efectiveRate) ** -periods);
+            
+            // Calculate the required net deflated balance
+            const requiredNetDeflatedBalance = desiredNetWithdrawalDeflated / withdrawalFactor;
+            
+            // Calculate the required net balance (not deflated)
+            const requiredNetBalance = requiredNetDeflatedBalance;
+            
+            // Calculate the required gross balance
+            const requiredGrossBalance = requiredNetBalance / (1 - taxOnProfits / 100);
+            
+            // Set the gross amount
+            setGrossAmount(parseFloat(requiredGrossBalance.toFixed(2)));
+            
+            // Calculate and set the net amount
+            const calculatedNetAmount = requiredGrossBalance * (1 - taxOnProfits / 100);
+            setNetAmount(parseFloat(calculatedNetAmount.toFixed(2)));
+            
+            // Disable the useNetAmount option since we're calculating both values
+            setUseNetAmount(false);
+        }
+    }, [useDesiredNetWithdrawalDeflated, desiredNetWithdrawalDeflated, taxOnProfits, expectedProfitability, expectedInflation, efectiveRate, periods]);
 
     useEffect(() => {
         if (grossAmount > 0 && taxOnProfits > 0 && periodDays > 0 && periods > 0 && expectedProfitability > 0 && expectedInflation > 0 && efectiveRate > 0) {
@@ -224,21 +259,36 @@ function FixedTimeWithdrawalRetirementSimulator() {
                         value={grossAmount || ''}
                         onChange={(value) => handleSetAmount(value, setGrossAmount)}
                         type="number"
-                        disabled={useNetAmount}
+                        disabled={useNetAmount || useDesiredNetWithdrawalDeflated}
                         placeholder="Enter gross amount"
                     />
                     <CustomCheckbox
                         checked={useNetAmount}
                         onChange={setUseNetAmount}
                         label="Use Net Amount"
+                        disabled={useDesiredNetWithdrawalDeflated}
                     />
                     <InputField
                         label="Net Amount"
                         value={netAmount || ''}
                         onChange={(value) => handleSetAmount(value, setNetAmount)}
                         type="number"
-                        disabled={!useNetAmount}
+                        disabled={!useNetAmount || useDesiredNetWithdrawalDeflated}
                         placeholder="Enter net amount"
+                    />
+                    <CustomCheckbox
+                        checked={useDesiredNetWithdrawalDeflated}
+                        onChange={setUseDesiredNetWithdrawalDeflated}
+                        label="Use Desired Net Withdrawal Deflated"
+                        disabled={useNetAmount}
+                    />
+                    <InputField
+                        label="Desired Net Withdrawal Deflated"
+                        value={desiredNetWithdrawalDeflated || ''}
+                        onChange={(value) => handleSetAmount(value, setDesiredNetWithdrawalDeflated)}
+                        type="number"
+                        disabled={!useDesiredNetWithdrawalDeflated}
+                        placeholder="Enter desired net withdrawal deflated"
                     />
                 </div>
             </div>
