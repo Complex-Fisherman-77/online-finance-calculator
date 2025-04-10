@@ -138,21 +138,6 @@ function PerpetualWithdrawalRetirementSimulator() {
                 dataArray.push(data);
             }
 
-            dataArray.push({
-                period: periods + 1,
-                previousBalance: dataArray[dataArray.length - 1].balance - dataArray[dataArray.length - 1].grossWithdrawal,
-                previousBalanceNet: 0,
-                previousBalanceNetDeflated: 0,
-                balance: 0,
-                balanceNet: 0,
-                inflationIndex: dataArray[dataArray.length - 1].inflationIndex * (1 + expectedInflation),
-                balanceNetDeflated: 0,
-                netWithdrawalDeflated: 0,
-                netWithdrawal: 0,
-                grossWithdrawal: 0,
-                grossWithdrawalOverBalance: 0,
-            });
-
             setPeriodsData(dataArray);
         }
     }, [grossAmount, taxOnProfits, periodDays, periods, expectedProfitability, expectedInflation, efectiveRate]);
