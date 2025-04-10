@@ -1,24 +1,24 @@
+import {
+    CategoryScale,
+    Chart as ChartJS,
+    Legend,
+    LinearScale,
+    LineElement,
+    PointElement,
+    Title,
+    Tooltip
+} from 'chart.js';
 import { useEffect, useState } from "react";
+import { Line } from 'react-chartjs-2';
 import { useTranslation } from "react-i18next";
-import { formatCurrency, formatPercentage } from "../shared/utils/input-masks";
+import '../apps-page.css';
+import { CustomCheckbox } from "../shared/components/custom-checkbox/custom-checkbox";
+import { InputField } from "../shared/components/input-field/input-field";
+import { ResultTable } from "../shared/components/result-table/result-table";
 import { useUrlParams } from "../shared/hooks/use-url-params";
 import { PeriodData } from "../shared/types/calculator.types";
-import { Line } from 'react-chartjs-2';
-import '../apps-page.css';
+import { formatCurrency, formatPercentage } from "../shared/utils/input-masks";
 import './perpetual-withdrawal-retirement-simulator.css';
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
-} from 'chart.js';
-import { InputField } from "../shared/components/input-field/input-field";
-import { CustomCheckbox } from "../shared/components/custom-checkbox/custom-checkbox";
-import { ResultTable } from "../shared/components/result-table/result-table";
 
 // Register ChartJS components
 ChartJS.register(
