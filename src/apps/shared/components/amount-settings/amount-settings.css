@@ -1,69 +1,26 @@
-.amount-settings {
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 20px;
+.container {
+  background: #f8f9fa;
+  box-sizing: border-box;
+  /* margin-top: 2rem; */
 }
 
-.amount-settings h2 {
-  color: #333;
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  font-weight: 600;
+.title {
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  padding-top: 1rem;
 }
 
-.amount-settings-inputs {
+.amount-section {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-@media (min-width: 768px) {
-  .amount-settings-inputs {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-  }
-}
-
-.amount-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 1rem;
   align-items: flex-end;
-  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  justify-content: center;
 }
 
-.amount-row:last-child {
-  margin-bottom: 0;
-}
-
-.amount-row .input-field {
+.input-group {
   flex: 1;
-  min-width: 200px;
   max-width: 300px;
 }
-
-.amount-row .checkbox-group {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-}
-
-@media (max-width: 768px) {
-  .amount-row {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-  }
-
-  .amount-row .input-field {
-    max-width: 100%;
-  }
-
-  .amount-row .checkbox-group {
-    width: 100%;
-    margin-bottom: 1rem;
-  }
-} 

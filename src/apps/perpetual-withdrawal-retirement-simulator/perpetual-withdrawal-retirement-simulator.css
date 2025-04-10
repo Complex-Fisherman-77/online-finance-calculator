@@ -1,0 +1,95 @@
+.perpetual-withdrawal-container {
+  max-width: 100%;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.perpetual-withdrawal-title {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.perpetual-withdrawal-section {
+  background: #f8f9fa;
+  box-sizing: border-box;
+  margin-top: 2rem;
+}
+
+.perpetual-withdrawal-section-title {
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  padding: 1rem;
+}
+
+.perpetual-withdrawal-amount-section {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  padding: 1.5rem;
+  justify-content: center;
+}
+
+.perpetual-withdrawal-inputs-section {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+.perpetual-withdrawal-result-section {
+  overflow-x: auto;
+  margin-top: 2rem;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.perpetual-withdrawal-charts-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.perpetual-withdrawal-chart-container {
+  background: #ffffff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.perpetual-withdrawal-input-group {
+  flex: 1;
+  max-width: 300px;
+}
+
+@media (max-width: 768px) {
+  .perpetual-withdrawal-container {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .perpetual-withdrawal-inputs-section {
+    grid-template-columns: 1fr;
+  }
+
+  .perpetual-withdrawal-amount-section {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .perpetual-withdrawal-input-group {
+    max-width: 100%;
+  }
+
+  .perpetual-withdrawal-charts-section {
+    grid-template-columns: 1fr;
+  }
+}

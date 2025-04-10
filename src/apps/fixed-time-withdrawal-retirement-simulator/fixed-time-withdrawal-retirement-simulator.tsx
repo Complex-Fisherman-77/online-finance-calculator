@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ResultTable } from "../shared/components/result-table/result-table";
-import { Navbar } from "../shared/components/navbar/navbar";
 import { AmountSettings } from "../shared/components/amount-settings/amount-settings";
 import { Settings } from "../shared/components/settings/settings";
 import { formatCurrency, formatPercentage } from "../shared/utils/input-masks";
@@ -212,7 +211,6 @@ function FixedTimeWithdrawalRetirementSimulator() {
 
     return (
         <div className={styles.container}>
-            <Navbar />
             <h1 className={styles.title}>{t('calculators.fixedTime.title')}</h1>
             
             <AmountSettings

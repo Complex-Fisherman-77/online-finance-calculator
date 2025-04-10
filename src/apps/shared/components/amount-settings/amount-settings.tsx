@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { InputField } from '../input-field/input-field';
 import { CustomCheckbox } from '../custom-checkbox/custom-checkbox';
-import styles from './amount-settings.module.css';
+import './amount-settings.css';
 
 interface AmountSettingsProps {
   initialBalance: number;
@@ -23,10 +23,10 @@ export function AmountSettings({
   const { t } = useTranslation();
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>{t('common.amountSettings')}</h2>
-      <div className={styles.amountSection}>
-        <div className={styles.inputGroup}>
+    <div className="container">
+      <h2 className="title">{t('common.amountSettings')}</h2>
+      <div className="amount-section">
+        <div className="input-group">
           <InputField
             label={t('common.grossAmount')}
             value={initialBalance}
@@ -35,7 +35,7 @@ export function AmountSettings({
             placeholder={t('common.enterGrossAmount')}
           />
         </div>
-        <div className={styles.inputGroup}>
+        <div className="input-group">
           <InputField
             label={t('common.netAmount')}
             value={netWithdrawal}
@@ -44,7 +44,7 @@ export function AmountSettings({
             placeholder={t('common.enterNetAmount')}
           />
         </div>
-        <div className={styles.inputGroup}>
+        <div className="input-group">
           <CustomCheckbox
             label={t('common.useDesiredNetWithdrawalDeflated')}
             checked={isNetWithdrawalDeflated}

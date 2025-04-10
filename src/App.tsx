@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Navbar } from './apps/shared/components/navbar/navbar'
 import './App.css'
 
 function App() {
@@ -8,7 +7,6 @@ function App() {
   
   return (
     <div className="app-container">
-      <Navbar />
       <div className="apps-grid">
         <Link to="/perpetual-withdrawal" className="app-card">
           <h2>{t('calculators.perpetual.title')}</h2>

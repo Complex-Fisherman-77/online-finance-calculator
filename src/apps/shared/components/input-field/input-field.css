@@ -1,36 +1,50 @@
-.input-field {
+.input-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.input-label {
-  font-size: 0.9rem;
+.input-group label {
   font-weight: 500;
   color: #2c3e50;
+  font-size: 0.95rem;
 }
 
-.input-control {
+.input-group input[type="text"],
+.input-group input[type="number"] {
   padding: 0.75rem;
   border: 1px solid #ced4da;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  color: #333;
-  background-color: #fff;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s;
+  background-color: #ffffff;
+  color: #2c3e50;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.input-control:focus {
+.input-group input[type="text"]:focus,
+.input-group input[type="number"]:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
 }
 
-.input-control:disabled {
+.input-group input[type="text"]:disabled,
+.input-group input[type="number"]:disabled {
   background-color: #e9ecef;
   cursor: not-allowed;
+  color: #6c757d;
 }
 
-.input-control::placeholder {
-  color: #6c757d;
-} 
+/* Currency input styling */
+.input-currency {
+  padding-left: 2rem !important;
+  text-align: right !important;
+}
+
+/* Percentage input styling */
+.input-percentage {
+  padding-right: 2rem !important;
+  text-align: right !important;
+}

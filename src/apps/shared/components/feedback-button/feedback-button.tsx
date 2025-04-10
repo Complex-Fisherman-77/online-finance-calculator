@@ -1,20 +1,21 @@
 import { useTranslation } from 'react-i18next';
 import './feedback-button.css';
 
-export function FeedbackButton() {
+export function GoogleFormsFeedback() {
+  const formLink = 'https://docs.google.com/forms/d/e/1FAIpQLSfFOIM1Yv-wm9rWxQB2h5egliEJN3rxXE_P562ZfApqIsxeew/viewform?usp=header';
   const { t } = useTranslation();
 
-  const handleFeedback = () => {
-    window.open('https://forms.gle/your-feedback-form', '_blank');
-  };
-
   return (
-    <button 
-      className="feedback-button"
-      onClick={handleFeedback}
-      title={t('common.feedback')}
-    >
-      Feedback
-    </button>
-  );
-} 
+      <div className="feedback-corner">
+      <a
+          href={formLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="feedback-button"
+          title={t('common.feedback')}
+      >
+          Feedback
+      </a>
+      </div>
+    );
+}

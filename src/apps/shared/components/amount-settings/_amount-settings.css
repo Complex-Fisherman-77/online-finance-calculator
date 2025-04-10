@@ -1,0 +1,69 @@
+.amount-settings {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.amount-settings h2 {
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.amount-settings-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .amount-settings-inputs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+.amount-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.amount-row:last-child {
+  margin-bottom: 0;
+}
+
+.amount-row .input-field {
+  flex: 1;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.amount-row .checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .amount-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .amount-row .input-field {
+    max-width: 100%;
+  }
+
+  .amount-row .checkbox-group {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+} 
