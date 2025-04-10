@@ -39,18 +39,18 @@ function FixedTimeWithdrawalRetirementSimulator() {
     const [netAmount, setNetAmount] = useState(parseFloat(getParam('netAmount', '0')));
     const [useDesiredNetWithdrawalDeflated, setUseDesiredNetWithdrawalDeflated] = useState(getParam('useDesiredNetWithdrawalDeflated', 'false') === 'true');
 
-    const [taxOnProfits, setTaxOnProfits] = useState(parseFloat(getParam('taxOnProfits', '15')));
+    const [taxOnProfits, setTaxOnProfits] = useState(parseFloat(getParam('taxOnProfits', '0.15')));
     const [periodDays, setPeriodDays] = useState(parseFloat(getParam('periodDays', '252')));
     const [periods, setPeriods] = useState(parseFloat(getParam('periods', '30')));
-    const [expectedProfitability, setExpectedProfitability] = useState(parseFloat(getParam('expectedProfitability', '10')));
-    const [expectedInflation, setExpectedInflation] = useState(parseFloat(getParam('expectedInflation', '5')));
+    const [expectedProfitability, setExpectedProfitability] = useState(parseFloat(getParam('expectedProfitability', '0.10')));
+    const [expectedInflation, setExpectedInflation] = useState(parseFloat(getParam('expectedInflation', '0.05')));
     const [efectiveRate, setEfectiveRate] = useState(0);
 
     const [periodsData, setPeriodsData] = useState<PeriodData[]>([]);
 
     useEffect(() => {
         if (expectedProfitability > 0 && expectedInflation > 0) {
-            setEfectiveRate((1 + expectedProfitability / 100) / (1 + expectedInflation / 100) - 1);
+            setEfectiveRate((1 + expectedProfitability) / (1 + expectedInflation) - 1);
         }
     }, [expectedProfitability, expectedInflation]);
 
@@ -62,7 +62,7 @@ function FixedTimeWithdrawalRetirementSimulator() {
             const withdrawalFactor = efectiveRate / (1 - Math.pow(1 + efectiveRate, -periods));
             
             // Calculate the initial net withdrawal deflated
-            const initialNetWithdrawalDeflated = (grossAmount * (1 - taxOnProfits / 100)) * withdrawalFactor;
+            const initialNetWithdrawalDeflated = (grossAmount * (1 - taxOnProfits)) * withdrawalFactor;
 
             dataArray.push({
                 period: 0,
@@ -70,9 +70,9 @@ function FixedTimeWithdrawalRetirementSimulator() {
                 previousBalanceNet: 0,
                 previousBalanceNetDeflated: 0,
                 balance: grossAmount,
-                balanceNet: grossAmount * (1 - taxOnProfits / 100),
+                balanceNet: grossAmount * (1 - taxOnProfits),
                 inflationIndex: 1,
-                balanceNetDeflated: (grossAmount * (1 - taxOnProfits / 100)) / 1,
+                balanceNetDeflated: (grossAmount * (1 - taxOnProfits)) / 1,
                 netWithdrawalDeflated: 0,
                 netWithdrawal: 0,
                 grossWithdrawal: 0,
@@ -81,18 +81,18 @@ function FixedTimeWithdrawalRetirementSimulator() {
             
             for (let i = 1; i <= periods; i++) {
                 const previousBalance = dataArray[i - 1].balance - dataArray[i - 1].grossWithdrawal;
-                const previousBalanceNet = previousBalance * (1 - taxOnProfits / 100);
+                const previousBalanceNet = previousBalance * (1 - taxOnProfits);
                 const previousBalanceNetDeflated = previousBalanceNet / dataArray[i - 1].inflationIndex;
-                const balance = previousBalance * (1 + expectedProfitability / 100);
-                const balanceNet = balance * (1 - taxOnProfits / 100);
-                const inflationIndex = dataArray[i - 1].inflationIndex * (1 + expectedInflation / 100);
+                const balance = previousBalance * (1 + expectedProfitability);
+                const balanceNet = balance * (1 - taxOnProfits);
+                const inflationIndex = dataArray[i - 1].inflationIndex * (1 + expectedInflation);
                 const balanceNetDeflated = balanceNet / inflationIndex;
                 
                 // For fixed time, we use the same withdrawal factor for all periods
                 // This ensures that the balance is depleted after the specified number of periods
                 const netWithdrawalDeflated = initialNetWithdrawalDeflated;
                 const netWithdrawal = netWithdrawalDeflated * inflationIndex;
-                const grossWithdrawal = netWithdrawal / (1 - taxOnProfits / 100);
+                const grossWithdrawal = netWithdrawal / (1 - taxOnProfits);
                 const grossWithdrawalOverBalance = grossWithdrawal / balance;
 
                 const data: PeriodData = {
@@ -120,7 +120,7 @@ function FixedTimeWithdrawalRetirementSimulator() {
                 previousBalanceNetDeflated: 0,
                 balance: 0,
                 balanceNet: 0,
-                inflationIndex: dataArray[dataArray.length - 1].inflationIndex * (1 + expectedInflation / 100),
+                inflationIndex: dataArray[dataArray.length - 1].inflationIndex * (1 + expectedInflation),
                 balanceNetDeflated: 0,
                 netWithdrawalDeflated: 0,
                 netWithdrawal: 0,
@@ -174,17 +174,17 @@ function FixedTimeWithdrawalRetirementSimulator() {
     ]);
 
     const balanceChartData = {
-        labels: periodsData.map(data => data.period),
+        labels: periodsData.slice(1).map(data => data.period),
         datasets: [
             {
                 label: t('table.balance'),
-                data: periodsData.map(data => data.balance),
+                data: periodsData.slice(1).map(data => data.balance),
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.1
             },
             {
                 label: t('table.grossWithdrawal'),
-                data: periodsData.map(data => data.grossWithdrawal),
+                data: periodsData.slice(1).map(data => data.grossWithdrawal),
                 borderColor: 'rgb(255, 99, 132)',
                 tension: 0.1
             }
@@ -192,17 +192,17 @@ function FixedTimeWithdrawalRetirementSimulator() {
     };
 
     const netDeflatedChartData = {
-        labels: periodsData.map(data => data.period),
+        labels: periodsData.slice(1).map(data => data.period),
         datasets: [
             {
                 label: t('table.balanceNetDeflated'),
-                data: periodsData.map(data => data.balanceNetDeflated),
+                data: periodsData.slice(1).map(data => data.balanceNetDeflated),
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.1
             },
             {
                 label: t('table.netWithdrawalDeflated'),
-                data: periodsData.map(data => data.netWithdrawalDeflated),
+                data: periodsData.slice(1).map(data => data.netWithdrawalDeflated),
                 borderColor: 'rgb(255, 99, 132)',
                 tension: 0.1
             }
