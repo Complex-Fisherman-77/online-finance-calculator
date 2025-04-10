@@ -36,7 +36,7 @@ i18n
       lookupQuerystring: 'lang',
       caches: ['localStorage']
     },
-    load: 'languageOnly' // This will treat 'pt-BR' as 'pt'
+    load: 'languageOnly' // This will treat 'pt-br' as 'pt'
   });
 
 export default i18n; 

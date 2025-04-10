@@ -58,8 +58,8 @@ export const parseCurrency = (value: string, locale: string = 'en'): number => {
   const cleanValue = value.replace(/[^\d.,]/g, '');
   
   // Handle different decimal separators based on locale
-  const decimalSeparator = locale === 'pt-BR' ? ',' : '.';
-  const thousandsSeparator = locale === 'pt-BR' ? '.' : ',';
+  const decimalSeparator = locale === 'pt' ? ',' : '.';
+  const thousandsSeparator = locale === 'pt' ? '.' : ',';
   
   // Replace thousands separator with empty string and decimal separator with dot
   const normalizedValue = cleanValue
@@ -77,8 +77,8 @@ export const parsePercentage = (value: string, locale: string = 'en'): number =>
   const cleanValue = value.replace(/[^\d.,]/g, '');
   
   // Handle different decimal separators based on locale
-  const decimalSeparator = locale === 'pt-BR' ? ',' : '.';
-  const thousandsSeparator = locale === 'pt-BR' ? '.' : ',';
+  const decimalSeparator = locale === 'pt' ? ',' : '.';
+  const thousandsSeparator = locale === 'pt' ? '.' : ',';
   
   // Replace thousands separator with empty string and decimal separator with dot
   const normalizedValue = cleanValue

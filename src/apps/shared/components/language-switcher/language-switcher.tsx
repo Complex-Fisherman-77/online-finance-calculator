@@ -22,8 +22,8 @@ export function LanguageSwitcher() {
                 EN
             </button>
             <button 
-                className={`lang-button ${i18n.language === 'pt-BR' ? 'active' : ''}`}
-                onClick={() => handleLanguageChange('pt-BR')}
+                className={`lang-button ${i18n.language === 'pt' ? 'active' : ''}`}
+                onClick={() => handleLanguageChange('pt')}
             >
                 PT
             </button>
