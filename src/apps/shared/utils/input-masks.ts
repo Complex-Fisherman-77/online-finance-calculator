@@ -1,13 +1,5 @@
 import { LocaleFormattingOptions } from '../types/calculator.types';
 
-// Define proper types for Intl.NumberFormat options
-interface FormattingOptions {
-  style: 'currency' | 'decimal' | 'percent';
-  currency?: string;
-  minimumFractionDigits?: number;
-  maximumFractionDigits?: number;
-}
-
 // Currency formatting options
 export const currencyOptions: LocaleFormattingOptions = {
   en: {

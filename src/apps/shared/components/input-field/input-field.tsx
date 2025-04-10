@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './input-field.css';
-import { formatCurrency, formatPercentage, parseCurrency, parsePercentage } from '../../utils/input-masks';
+import { formatCurrency, formatPercentage } from '../../utils/input-masks';
 
 interface InputFieldProps {
   label: string;
