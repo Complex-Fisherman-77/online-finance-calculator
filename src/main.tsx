@@ -9,6 +9,7 @@ import { Navbar } from './apps/shared/components/navbar/navbar.tsx'
 
 // Import i18n configuration
 import './apps/shared/i18n'
+import MarkToMarketSimulator from './apps/mark-to-market-simulator/mark-to-market-simulator.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -18,6 +19,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/" element={<App />} />
         <Route path="/perpetual-withdrawal" element={<PerpetualWithdrawalRetirementSimulator />} />
         <Route path="/fixed-time-withdrawal" element={<FixedTimeWithdrawalRetirementSimulator />} />
+        <Route path="/mark-to-market" element={<MarkToMarketSimulator />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

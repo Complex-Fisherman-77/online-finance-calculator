@@ -18,6 +18,11 @@ function App() {
           <p>{t('calculators.fixedTime.description')}</p>
         </Link>
 
+        <Link to="/mark-to-market" className="app-card">
+          <h2>{t('calculators.markToMarket.title')}</h2>
+          <p>{t('calculators.markToMarket.description')}</p>
+        </Link>
+
         {/* Add more calculator cards here as you create them */}
       </div>
     </div>
